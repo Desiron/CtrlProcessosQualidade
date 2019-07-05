@@ -1,0 +1,32 @@
+.teste {
+	border: none;
+}
+
+/* .ui-panelgrid{	
+	font-size:610px ;
+} */
+/* .parametro{
+	width:10%;
+	border: 1px;
+} */
+.fieldset {
+	width: 100%;
+}
+
+.obs {
+	width: 70px;
+}
+
+.ui-dialog-title-dialog {
+	color: red;
+}
+
+.dialogs {
+	background: blue;
+}
+
+.taja {
+	background: red;
+	text-align: center;
+	color: white;
+}

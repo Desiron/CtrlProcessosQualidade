@@ -1,0 +1,188 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+	<title>Principal</title>
+
+	<!-- Calendário em portuguÊS-->
+	<h:outputScript library="js" name="locale-primefaces.js" />
+
+	<!-- CSS para teste -->
+	<h:outputStylesheet library="css" name="teste.css" />
+
+</h:head>
+<h:body>
+	<h:form id="msg">
+		<p:growl id="teste" life="5000" />
+	</h:form>
+	<b:navBar brand-style="color: white"
+		style="background: red; border-color: red;" inverse="true" fixed="top">
+		<b:navbarLinks>
+			<b:navCommandLink style="color:white; font-size:20px" value="Início"
+				action="#{fomularioCtrl.inicio}" update="corpo" />
+			<b:dropMenu style="color:white;" value="Novo">
+				<b:navLink value="Formulário" href="selectProc.xhtml" />
+				<b:navLink
+					rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_ADMINISTRADOR'}"
+					value="Usuário" href="../admin/formPessoa.xhtml" />
+			</b:dropMenu>
+			<b:navCommandLink style="color:white;" value="Abertos"
+				action="#{fomularioCtrl.listarFormAberto}" update="corpo" />
+			<b:navCommandLink style="color:white;" value="Fechados"
+				action="#{fomularioCtrl.listarFormFechado}" update="corpo" />
+			<b:dropMenu style="color:white;" value="Dropdown">
+				<b:navLink value="Action" href="#"></b:navLink>
+				<b:navLink value="Another action" href="#"></b:navLink>
+				<b:navLink value="Something else here" href="#"></b:navLink>
+				<b:navLink></b:navLink>
+				<b:navLink header="Nav header"></b:navLink>
+				<b:navLink value="Separated link" href="#"></b:navLink>
+				<b:navLink value="One more separated link" href="#"></b:navLink>
+			</b:dropMenu>
+			<b:dropMenu
+				rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_ADMINISTRADOR'}"
+				style="color:white;" value="Administração">
+				<b:navLink value="Usuários" href="../admin/listPessoas.xhtml" />
+			</b:dropMenu>
+		</b:navbarLinks>
+		<div class="navbar-form navbar-right">
+			<div style="width: 40px" class="form-group">
+				<p:graphicImage
+					rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_INSPETOR'}"
+					library="images" name="user.png" value="user.png" width="21" />
+				<p:graphicImage
+					rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_GESTOR'}"
+					library="images" name="gestor.png" value="gestor.png" width="25" />
+				<p:graphicImage
+					rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_ADMINISTRADOR'}"
+					library="images" name="admin.png" value="admin.png" width="25" />
+			</div>
+			
+		</div>
+		<div class="navbar-form navbar-right">
+				<input style="color: red; height: 34px; width: 50px"
+					class="btn waves-effect waves-light"
+					onclick="document.location='#{request.contextPath}/j_spring_security_logout'"
+					value="Sair" />
+			</div>
+	</b:navBar>
+
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+
+	<h:form id="corpo">
+		<p:panel>
+			<b:dataTable lang="it"
+				custom-lang-url="//cdn.datatables.net/plug-ins/1.10.12/i18n/Portuguese-Brasil.json"
+				value="#{fomularioCtrl.listaFormularios}" var="form"
+				row-style-class="#{form.status==1?'light-power':'light'}">
+				<b:dataTableColumn value="#{form.id}" label="ID" />
+				<b:dataTableColumn style="width: 5px" label="Abertura Formulário">
+					<h:outputText value="#{form.dataFormulario}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</b:dataTableColumn>
+				<b:dataTableColumn style="width: 300px"
+					value="#{form.produto.descricao}" label="Produto" />
+				<b:dataTableColumn style="width: 50px" label="Abertura Linha">
+					<h:outputText value="#{form.dataLinha}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm"
+							timeZone="America/Sao_Paulo" />
+					</h:outputText>
+				</b:dataTableColumn>
+
+				<b:dataTableColumn label="Status">
+					<div align="center">
+						<b:label rendered="#{form.status == 1}" text="Aberto"
+							severity="success" />
+						<b:label rendered="#{form.status != 1}" text="Fechado"
+							severity="danger" />
+					</div>
+				</b:dataTableColumn>
+
+				<b:dataTableColumn label-style="text-align: center" label="Ações">
+					<h:panelGrid columns="5">
+						<b:commandButton value="Visualizar" look="success"
+							action="#{fomularioCtrl.visuRota(form)}" />
+						<p:outputLabel value=" " />
+						<b:commandButton value="+ Rota" look="primary"
+							action="#{fomularioCtrl.novaRota(form)}"
+							rendered="#{form.status == 1}" />
+						<p:outputLabel value=" " />
+						<b:commandButton action="#{fomularioCtrl.setarForm(form)}"
+							look="danger" update="fechar2" oncomplete="PF('fechar1').show()"
+							rendered="#{form.status == 1}">
+							<b:icon value="glyphicon glyphicon-remove" />
+						</b:commandButton>
+					</h:panelGrid>
+					<p:dialog closable="false" style="backgroud:red;"
+						header="Tem certeza que deseja fechar o formulário" id="fechar2"
+						modal="true" widgetVar="fechar1" resizable="false">
+						<div align="center">
+							<div align="center">
+								<p:panelGrid columns="4" style="border: 1px;">
+
+									<h:outputLabel value="Produto:" />
+									<h:outputLabel
+										value="#{fomularioCtrl.formulario.produto.descricao}" />
+
+									<h:outputLabel value="Código do Produto: " />
+									<h:outputLabel value="#{fomularioCtrl.formulario.produto.id}" />
+
+									<h:outputLabel value="Abertura da Linha: " />
+									<h:outputLabel value="#{fomularioCtrl.formulario.dataLinha}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt"
+											timeZone="America/Sao_Paulo" />
+									</h:outputLabel>
+
+									<h:outputLabel value="Data de Abertura do formulário: " />
+									<h:outputLabel
+										value="#{fomularioCtrl.formulario.dataFormulario}">
+										<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt"
+											timeZone="America/Sao_Paulo" />
+									</h:outputLabel>
+
+									<h:outputLabel value="Inspetor de Qualidade: " />
+									<h:outputLabel value="#{fomularioCtrl.formulario.pessoa.nome}" />
+
+									<h:outputLabel value="Status Formulário: " />
+									<h:outputLabel
+										rendered="#{fomularioCtrl.formulario.status == 1}"
+										value="Aberto" />
+									<h:outputLabel
+										rendered="#{fomularioCtrl.formulario.status != 1}"
+										value="Fechado" />
+
+								</p:panelGrid>
+							</div>
+							<p:panel style="border:none">
+								<h:panelGrid columns="3" style="width: 300px">
+
+									<b:commandButton style="width: 150px" value="Sim" look="danger"
+										action="#{fomularioCtrl.fecharForm(fomularioCtrl.formulario)}" />
+
+									<p:outputLabel value=" " />
+									<b:commandButton style="width: 150px" value="Não"
+										look="primary" onclick="dialog.hide()" />
+								</h:panelGrid>
+							</p:panel>
+						</div>
+					</p:dialog>
+
+				</b:dataTableColumn>
+
+				
+	
+			</b:dataTable>
+		</p:panel>
+	</h:form>
+</h:body>
+</html>

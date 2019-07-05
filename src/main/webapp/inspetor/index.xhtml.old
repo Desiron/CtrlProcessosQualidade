@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">	
+<h:head>
+	<h:outputScript  library="js" name="locale-primefaces.js"/>
+	<title>Área do Usuário</title>	
+</h:head>
+<h:body>
+
+	<h:form id="formulario">
+		<p:growl id="msg" life="2000" />
+			
+		<p:panelGrid columns="2" style="width:100%">
+		<p:graphicImage library="images" value="belma.png" width="150" />
+		<p:outputLabel  width="70%" ><div align="center">Check List de Controle de Processo</div></p:outputLabel>
+		</p:panelGrid>
+		
+		<p:fieldset  >
+		<p:panelGrid columns="4">
+			<p:outputLabel value="Produto: " />
+			<p:outputLabel value="#{ctrlProcessoCtrl.formulario.produto.descricao}" />
+			
+			<p:outputLabel value="Código do Produto: " />
+			<p:outputLabel value="#{ctrlProcessoCtrl.formulario.produto.id}" />
+			
+			<h:outputText value="Abertura da Linha: " />
+			<p:calendar id="dataAbertLinha" value="#{ctrlProcessoCtrl.formulario.dataLinha}" 
+			yearRange="c-0:c+0" locale="pt" navigator="true" pattern="dd-MM-yyyy HH:mm" />
+			
+			<p:outputLabel value="Data de Abertura do formulário: " />
+			<p:outputLabel disabled="true" value="#{ctrlProcessoCtrl.formulario.dataFormulario}" pattern="dd/MM/yyyy HH:mm" locale="pt"/>
+			
+			<p:outputLabel value="Inspetor de Qualidade: "/>
+			<p:outputLabel  value="#{ctrlProcessoCtrl.formulario.pessoa.nome}" />
+			
+			<p:outputLabel value="Status Formulário: " />
+			<p:outputLabel rendered="#{ctrlProcessoCtrl.formulario.status == 1}" value="Aberto" />
+			<p:outputLabel rendered="#{ctrlProcessoCtrl.formulario.status != 1}" value="Fechado" />		
+			
+		</p:panelGrid>		
+	</p:fieldset>
+	<br></br>
+	
+	<p:fieldset legend="Saída do Forno">	
+	<p:panelGrid columns="2">
+	<p:outputLabel value="Padrão de Cor" />
+		<p:panelGrid columns="2">
+		<p:outputLabel value="Lastro" />
+			 <p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.lastro}">
+	        	<f:selectItem itemLabel="CF" itemValue="CF" />
+	        	<f:selectItem itemLabel="NF" itemValue="NF" />
+	       	</p:selectOneRadio>
+	      <p:outputLabel value="Teto" />
+	       	  <p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.teto}">
+	            	<f:selectItem itemLabel="CF" itemValue="CF" />
+	            	<f:selectItem itemLabel="NF" itemValue="NF" />
+            	</p:selectOneRadio>
+		</p:panelGrid>
+		<p:outputLabel value="Aspectos Visuais" />
+		 <p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.aspectoVisu}">
+	        	<f:selectItem itemLabel="CF" itemValue="CF" />
+	        	<f:selectItem itemLabel="NF" itemValue="NF" />
+	     </p:selectOneRadio>
+	     <p:outputLabel value="Observações:" />
+	     <p:inputTextarea value="#{ctrlProcessoCtrl.formulario.obsSaidaForno}" />
+	</p:panelGrid>		
+	</p:fieldset>
+	<br></br>
+		
+	<p:fieldset legend="Umidade">
+		<p:panelGrid columns="2">
+			<p:outputLabel value="Horário" />
+			<p:calendar id="time" value="#{ctrlProcessoCtrl.formulario.horaUmidade}" pattern="HH:mm" timeOnly="true"  />
+					
+		</p:panelGrid>
+	</p:fieldset>
+	<br></br>
+	
+	<br></br>
+	<p:commandButton value="Fechar" update="formulario" action="#{ctrlProcessoCtrl.fecharForm}"/>
+	<p:commandButton value="Reabrir" rendered="#{ctrlProcessoCtrl.formulario.status !=1}" update="formulario" action="#{ctrlProcessoCtrl.abrirForm}"/>
+	<p:commandButton value="Voltar" action="principal.xhtml"/>
+	</h:form>
+	
+</h:body>
+</html>

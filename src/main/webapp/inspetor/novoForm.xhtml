@@ -1,0 +1,230 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Novo Formulário</title>
+	<h:outputScript library="js" name="locale-primefaces.js" />
+	<link rel="stylesheet" type="text/css" href="css/teste.css"></link>
+	<h:outputStylesheet library="css" name="teste.css" />
+</h:head>
+<h:body>
+
+	<h:form id="mensa">
+		<p:growl id="msg" life="2000" />
+	</h:form>
+
+	<h:form id="formulario">
+		<h:panelGrid>
+			<p:panelGrid columns="2" style="width:100%">
+				<p:graphicImage library="images" name="belma.png" value="belma.png"
+					width="150" />
+				<p:outputLabel>List de Controle de Processo</p:outputLabel>
+			</p:panelGrid>
+
+			<p:fieldset styleClass="teste">
+				<div align="center">
+					<p:panelGrid columns="4" styleClass="teste">
+
+						<p:outputLabel value="Produto: " />
+						<p:outputLabel
+							value="#{ctrlProcessoCtrl.formulario.produto.descricao}" />
+
+						<p:outputLabel value="Código do Produto: " />
+						<p:outputLabel value="#{ctrlProcessoCtrl.formulario.produto.id}" />
+
+						<h:outputText value="Abertura da Linha: " />
+						<p:calendar id="dataAbertLinha"
+							value="#{ctrlProcessoCtrl.formulario.dataLinha}"
+							yearRange="c-0:c+0" locale="pt" navigator="true"
+							pattern="dd-MM-yyyy HH:mm" />
+
+						<p:outputLabel value="Data de Abertura do formulário: " />
+						<h:outputText
+							value="#{ctrlProcessoCtrl.formulario.dataFormulario}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" />
+						</h:outputText>
+
+						<p:outputLabel value="Inspetor de Qualidade: " />
+						<p:outputLabel value="#{ctrlProcessoCtrl.formulario.pessoa.nome}" />
+
+						<p:outputLabel value="Status Formulário: " />
+						<p:outputLabel
+							rendered="#{ctrlProcessoCtrl.formulario.status == 1}"
+							value="Aberto" />
+						<p:outputLabel
+							rendered="#{ctrlProcessoCtrl.formulario.status != 1}"
+							value="Fechado" />
+
+					</p:panelGrid>
+				</div>
+			</p:fieldset>
+			<br></br>
+
+			<p:fieldset legend="Saída do Forno" styleClass="fieldset">
+				<p:panelGrid columns="2" style="width:100%">
+					<p:outputLabel value="Padrão de Cor" />
+					<p:panelGrid columns="2" styleClass="parametro" style="border:1px">
+						<p:outputLabel value="Lastro" styleClass="parametro" />
+						<p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.lastro}">
+							<f:selectItem itemLabel="CF" itemValue="CF" />
+							<f:selectItem itemLabel="NF" itemValue="NF" />
+						</p:selectOneRadio>
+						<p:outputLabel value="Teto" />
+						<p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.teto}">
+							<f:selectItem itemLabel="CF" itemValue="CF" />
+							<f:selectItem itemLabel="NF" itemValue="NF" />
+						</p:selectOneRadio>
+					</p:panelGrid>
+					<p:outputLabel styleClass="parametro" value="Peso Assado" />
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Min (55g):" />
+						<p:inputNumber value="#{ctrlProcessoCtrl.formulario.pesoAssMin}"
+							symbolPosition="s" symbol="g" />
+						<p:outputLabel value="Max (60g):" />
+						<p:inputNumber symbolPosition="s" symbol="g"
+							value="#{ctrlProcessoCtrl.formulario.pesoAssMax}" />
+					</p:panelGrid>
+					<p:outputLabel value="Comprimento" />
+					<p:panelGrid columns="2">
+						<p:outputLabel value="Min (56mm):" />
+						<p:inputNumber symbolPosition="s" symbol="mm"
+							value="#{ctrlProcessoCtrl.formulario.compriMin}" />
+						<p:outputLabel value="Max (61mm):" />
+						<p:inputNumber symbolPosition="s" symbol="mm"
+							value="#{ctrlProcessoCtrl.formulario.compriMax}" />
+					</p:panelGrid>
+					<p:outputLabel value="Espessura" />
+					<p:panelGrid columns="2">
+						<h:outputLabel style="width:200%" value="Min (3mm):" />
+						<p:inputNumber symbolPosition="s" symbol="mm"
+							value="#{ctrlProcessoCtrl.formulario.espessuraMin}" />
+						<h:outputLabel value="Max (6mm):" />
+						<p:inputNumber symbolPosition="s" symbol="mm"
+							value="#{ctrlProcessoCtrl.formulario.espessuraMax}" />
+					</p:panelGrid>
+					<p:outputLabel value="Aspectos Visuais" />
+					<p:selectOneRadio
+						value="#{ctrlProcessoCtrl.formulario.aspectoVisu}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Observações:" />
+					<p:inputTextarea styleClass="obs"
+						value="#{ctrlProcessoCtrl.formulario.obsSaidaForno}" />
+				</p:panelGrid>
+			</p:fieldset>
+			<br></br>
+
+			<p:fieldset legend="Umidade" styleClass="fieldset">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Horário" />
+					<p:calendar value="#{ctrlProcessoCtrl.dataTempUmidade}" locale="pt"
+						timeOnly="true" pattern="HH:mm" />
+					<p:outputLabel value="Porcentagem (de 2,5% a 4%)" />
+					<p:inputNumber symbolPosition="s" symbol="%"
+						value="#{ctrlProcessoCtrl.formulario.porcUmidade}" />
+					<p:outputLabel value="Observações:" />
+					<p:inputTextarea value="#{ctrlProcessoCtrl.formulario.obsUmidade}" />
+				</p:panelGrid>
+			</p:fieldset>
+			<br></br>
+
+			<p:fieldset legend="Pacotes" styleClass="fieldset">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Peso Pacote (796g a 844g):" />
+					<p:inputNumber symbolPosition="s" symbol="g"
+						value="#{ctrlProcessoCtrl.formulario.pesoPacote}" />
+					<p:outputLabel value="Peso Pacote Unit (133g a 138g): " />
+					<p:inputNumber symbolPosition="s" symbol="g"
+						value="#{ctrlProcessoCtrl.formulario.pesoPacoteUni}" />
+					<p:outputLabel value="Peso Unidade (5g a 5,2g):" />
+					<p:inputNumber symbolPosition="s" symbol="g"
+						value="#{ctrlProcessoCtrl.formulario.pesoUnidade}" />
+					<p:outputLabel value="Quantidade de Biscoitos (26~1):" />
+					<p:inputNumber value="#{ctrlProcessoCtrl.formulario.qtdBisco}" />
+					<p:outputLabel value="Embalagem:" />
+					<p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.embalagem}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Solda Vertical:" />
+					<p:selectOneRadio value="#{ctrlProcessoCtrl.formulario.soldaVert}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Solda Superior:" />
+					<p:selectOneRadio
+						value="#{ctrlProcessoCtrl.formulario.soldaSuperior}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Solda Inferior" />
+					<p:selectOneRadio
+						value="#{ctrlProcessoCtrl.formulario.soldaInferior}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Observações:" />
+					<p:inputTextarea value="#{ctrlProcessoCtrl.formulario.obsPacote}" />
+				</p:panelGrid>
+			</p:fieldset>
+			<br></br>
+
+			<p:fieldset legend="Codificação" styleClass="fieldset">
+				<p:panelGrid columns="2">
+					<p:outputLabel value="Lote/Validade (Emb 1º):" />
+					<p:selectOneRadio
+						value="#{ctrlProcessoCtrl.formulario.loteValPrima}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Lote/Validade (Emb 2º):" />
+					<p:selectOneRadio
+						value="#{ctrlProcessoCtrl.formulario.loteValSecun}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Etiqueta:" />
+					<p:selectOneRadio
+						value="#{ctrlProcessoCtrl.formulario.etiquetaSecun}">
+						<f:selectItem itemLabel="CF" itemValue="CF" />
+						<f:selectItem itemLabel="NF" itemValue="NF" />
+					</p:selectOneRadio>
+					<p:outputLabel value="Observações:" />
+					<p:inputTextarea
+						value="#{ctrlProcessoCtrl.formulario.obsCodificacao}" />
+				</p:panelGrid>
+			</p:fieldset>
+			<br></br>
+
+			<div align="center">
+				<p:panelGrid columns="1"
+					style="align:center;width:100%;color:white;background: red;wi">
+					<p:outputLabel styleClass="taja">
+					Todos os dados que forem encontrados fora dos padrões especificados, alertar imediatamente 
+					ao responsável de cada setor e ao controle de Qualidade.
+				</p:outputLabel>
+				</p:panelGrid>
+			</div>
+			<br></br>
+
+		</h:panelGrid>
+		<p:commandButton value="Add Form"
+			action="#{ctrlProcessoCtrl.novoFormulario}" update="mensa" />
+		<p:commandButton value="Salvar" onclick="jx_widgetVar.show();"
+			action="#{ctrlProcessoCtrl.salvarForm}" />
+		<p:commandButton value="Fechar"
+			rendered="#{ctrlProcessoCtrl.formulario.status ==1}"
+			update="formulario" action="#{ctrlProcessoCtrl.fecharForm}" />
+		<p:commandButton value="Reabrir"
+			rendered="#{ctrlProcessoCtrl.formulario.status !=1}"
+			update="formulario" action="#{ctrlProcessoCtrl.abrirForm}" />
+		<p:commandButton value="Voltar" action="principal.xhtml" />
+	</h:form>
+</h:body>
+</html>

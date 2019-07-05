@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich">
+
+<h:head>
+	<title><h:form>
+			<div align="center">
+				<h6>
+					<p:panelGrid columns="4" style="border: 1px;">
+						<h:outputLabel value="Produto:" />
+						<h:outputLabel
+							value="#{fomularioCtrl.formulario.produto.descricao}" />
+
+						<h:outputLabel value="Código do Produto: " />
+						<h:outputLabel value="#{fomularioCtrl.formulario.produto.id}" />
+
+						<h:outputLabel value="Abertura da Linha: " />
+						<h:outputLabel value="#{fomularioCtrl.formulario.dataLinha}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt"
+								timeZone="America/Sao_Paulo" />
+						</h:outputLabel>
+
+						<h:outputLabel value="Data de Abertura do formulário: " />
+						<h:outputLabel value="#{fomularioCtrl.formulario.dataFormulario}">
+							<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt"
+								timeZone="America/Sao_Paulo" />
+						</h:outputLabel>
+
+						<h:outputLabel value="Inspetor de Qualidade: " />
+						<h:outputLabel value="#{fomularioCtrl.formulario.pessoa.nome}" />
+
+						<h:outputLabel value="Status Formulário: " />
+						<h:outputLabel rendered="#{fomularioCtrl.formulario.status == 1}"
+							value="Aberto" />
+						<h:outputLabel rendered="#{fomularioCtrl.formulario.status != 1}"
+							value="Fechado" />
+
+					</p:panelGrid>
+				</h6>
+			</div>
+		</h:form></title>
+	<h:outputScript library="js" name="locale-primefaces.js" />
+	<link rel="stylesheet" type="text/css" href="css/teste.css"></link>
+	<h:outputStylesheet library="css" name="teste.css" />
+</h:head>
+
+
+<h:body>
+	<h:form id="msg">s
+		<p:growl id="teste" life="5000" />
+	</h:form>
+
+
+	<h:form id="menu">
+		<b:navBar brand-style="color: white"
+			style="background: red; border-color: red;" inverse="true"
+			fixed="top">
+			<b:navbarLinks>
+				<b:navCommandLink style="color:white; font-size:20px" value="Início"
+					action="#{fomularioCtrl.inicio}" />
+				<b:dropMenu style="color:white;" value="Novo">
+					<b:navLink value="Formulário" href="selectProc.xhtml" />
+					<b:navLink
+						rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_ADMINISTRADOR'}"
+						value="Usuário" href="../admin/formPessoa.xhtml" />
+				</b:dropMenu>
+				<b:navCommandLink style="color:white;" value="Abertos"
+					action="#{fomularioCtrl.listarFormAberto}" />
+				<b:navCommandLink style="color:white;" value="Fechados"
+					action="#{fomularioCtrl.listarFormFechado}" />
+				<b:dropMenu style="color:white;" value="Dropdown">
+					<b:navLink value="Action" href="#"></b:navLink>
+					<b:navLink value="Another action" href="#"></b:navLink>
+					<b:navLink value="Something else here" href="#"></b:navLink>
+					<b:navLink></b:navLink>
+					<b:navLink header="Nav header"></b:navLink>
+					<b:navLink value="Separated link" href="#"></b:navLink>
+					<b:navLink value="One more separated link" href="#"></b:navLink>
+				</b:dropMenu>
+				<b:dropMenu
+					rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_ADMINISTRADOR'}"
+					style="color:white;" value="Administração">
+					<b:navLink value="Usuários" href="../admin/listPessoas.xhtml" />
+				</b:dropMenu>
+			</b:navbarLinks>
+			<div class="navbar-form navbar-right">
+				<div style="width: 40px" class="form-group">
+					<p:graphicImage
+						rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_INSPETOR'}"
+						library="images" name="user.png" value="user.png" width="21" />
+					<p:graphicImage
+						rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_GESTOR'}"
+						library="images" name="gestor.png" value="gestor.png" width="25" />
+					<p:graphicImage
+						rendered="#{fomularioCtrl.pessoa.tipo == 'ROLE_ADMINISTRADOR'}"
+						library="images" name="admin.png" value="admin.png" width="25" />
+				</div>
+				<div style="width: 250px" class="form-group">
+					<p:outputLabel style="color:white;"
+						value="#{fomularioCtrl.pessoa.nome}" />
+				</div>
+				<input style="color: red; height: 34px; width: 50px"
+					class="btn waves-effect waves-light"
+					onclick="document.location='#{request.contextPath}/j_spring_security_logout'"
+					value="Sair" />
+			</div>
+		</b:navBar>
+	</h:form>
+
+
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+
+	<h:form>
+		<rich:extendedDataTable value="#{fomularioCtrl.visuTemp}" var="linha"
+			id="table" frozenColumns="2" style="height:300px; width:500px;"
+			selectionMode="none" clientRows="#{linha}" showColumnControl="true">
+			<f:facet name="header">
+				<h:outputText value="TESTE TABELA" />
+			</f:facet>
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="Label" />
+				</f:facet>
+				<h:outputText value="#{linha.label}" />
+			</rich:column>
+			<rich:column>
+				<f:facet name="header">
+					<h:outputText value="valores" />
+				</f:facet>
+				<h:outputText value="#{linha.valores}" />
+			</rich:column>
+		</rich:extendedDataTable>
+	</h:form>
+
+</h:body>
+</html>

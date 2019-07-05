@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Área do Administrador</title>
+</h:head>
+<h:body>
+
+
+	<h:form id="listPes">
+		<p:dataTable var="pes" value="#{pessoaCtrl.list}"
+			style="horizontal-align:center">
+
+			<p:column id="id" style="width:5%">
+				<f:facet name="header" value="ID">
+					<h:outputText value="ID" />
+				</f:facet>
+				<p:outputLabel value="#{pes.id}" />
+			</p:column>
+			<p:column id="nome">
+				<f:facet name="header" value="Nome">
+					<h:outputText value="Nome" />
+				</f:facet>
+				<p:outputLabel value="#{pes.nome}" />
+			</p:column>
+			<p:column id="usuario">
+				<f:facet name="header" value="Usuário">
+					<h:outputText value="Usuário" />
+				</f:facet>
+				<p:outputLabel value="#{pes.usuario}" />
+			</p:column>
+			<p:column id="senha">
+				<f:facet name="header" value="senha">
+					<h:outputText value="Senha" />
+				</f:facet>
+				<p:outputLabel value="#{pes.senha}" />
+			</p:column>
+			<p:column id="tipo">
+				<f:facet name="header" value="Tipo Usuário">
+					<h:outputText value="Tipo Usuário" />
+				</f:facet>
+				<h:outputText value="ADMIN"
+					rendered="#{pes.tipo=='ROLE_ADMINISTRADOR'}" />
+				<h:outputText value="INSPETOR"
+					rendered="#{pes.tipo=='ROLE_INSPETOR'}" />
+				<h:outputText value="GESTOR" rendered="#{pes.tipo=='ROLE_GESTOR'}" />
+			</p:column>
+
+			<p:column style="width:11%">
+				<div align="center">
+					<p:commandButton value="Alterar"
+						action="#{pessoaCtrl.actionAlterarUsuario(pes)}" />
+					<p:commandButton value="Excluir"
+						action="#{pessoaCtrl.actionExcluir(pes)}" update="listPes" />
+				</div>
+			</p:column>
+		</p:dataTable>
+		<p:commandButton value="Voltar" action="principal.xhtml" />
+	</h:form>
+</h:body>
+</html>

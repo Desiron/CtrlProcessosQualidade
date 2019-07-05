@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+	<title>Principal</title>
+	<h:outputScript library="js" name="locale-primefaces.js" />
+	<link rel="stylesheet" type="text/css" href="css/teste.css"></link>
+	<h:outputStylesheet library="css" name="teste.css" />
+</h:head>
+<h:body>
+
+	<b:form>
+		<b:navBar brand-style="color: white"
+			style="background: red; border-color: red;" inverse="true"
+			fixed="top">
+			<b:navbarLinks>
+				<b:navCommandLink style="color:white; font-size:20px" value="Início"
+					action="#{fomularioCtrl.inicio}" />
+				<b:dropMenu style="color:white;" value="Novo">
+					<b:navLink value="Formulário" href="selectProc.xhtml" />
+				</b:dropMenu>
+				<b:navCommandLink style="color:white;" value="Abertos"
+					action="#{fomularioCtrl.listarFormAberto}" />
+				<b:navCommandLink style="color:white;" value="Fechados"
+					action="#{fomularioCtrl.listarFormFechado}" />
+				<b:dropMenu style="color:white;" value="Dropdown">
+					<b:navLink value="Action" href="#"></b:navLink>
+					<b:navLink value="Another action" href="#"></b:navLink>
+					<b:navLink value="Something else here" href="#"></b:navLink>
+					<b:navLink></b:navLink>
+					<b:navLink header="Nav header"></b:navLink>
+					<b:navLink value="Separated link" href="#"></b:navLink>
+					<b:navLink value="One more separated link" href="#"></b:navLink>
+				</b:dropMenu>
+			</b:navbarLinks>
+			<div class="navbar-form navbar-right">
+				<input style="color: red; height: 34px; width: 50px"
+					class="btn waves-effect waves-light"
+					onclick="document.location='#{request.contextPath}/j_spring_security_logout'"
+					value="Sair" />
+			</div>
+		</b:navBar>
+	</b:form>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+
+	<h:form>
+		<p:growl showDetail="false" life="5000" />
+
+		<div align="center" style="border: 0px">
+			<b:panel style="width:600px">
+				<h:panelGrid columns="2" styleClass="teste">
+					<h:column footerClass="teste">
+						<h:outputText for="novoForm" value="Selecionar Produto:" />
+					</h:column>
+					<h:column>
+						<p:selectOneMenu id="novoForm" value="#{fomularioCtrl.produto}"
+							panelStyle="width:180px" effect="fade" style="width:400px"
+							filter="true" filterMatchMode="contains">
+							<f:selectItems value="#{fomularioCtrl.listaProdutos}" var="prod"
+								itemLabel="#{prod.descricao}" itemValue="#{prod.id}" />
+						</p:selectOneMenu>
+					</h:column>
+					<h:column style="width:80px">
+						<p:commandButton value="Novo" update="novo"
+							oncomplete="PF('dlg').show()" action="#{fomularioCtrl.iniform}" />
+					</h:column>
+				</h:panelGrid>
+			</b:panel>
+		</div>
+
+
+
+		<p:dialog id="novo" header="Dados do Formulário" modal="true"
+			widgetVar="dlg" resizable="true" positionType="adsolute">
+
+			<div align="center">
+				<p:panelGrid columns="4" style="border: 1px;">
+
+					<h:outputLabel value="Produto:" />
+					<h:outputLabel
+						value="#{fomularioCtrl.formulario.produto.descricao}" />
+
+					<h:outputLabel value="Código do Produto: " />
+					<h:outputLabel value="#{fomularioCtrl.formulario.produto.id}" />
+
+					<h:outputText value="Abertura da Linha: " />
+					<p:calendar value="#{fomularioCtrl.formulario.dataLinha}"
+						locale="pt" pattern="dd/MM/yyyy HH:mm" />
+
+					<h:outputLabel value="Data de Abertura do formulário: " />
+					<h:outputLabel value="#{fomularioCtrl.formulario.dataFormulario}">
+						<f:convertDateTime pattern="dd/MM/yyyy HH:mm" locale="pt"
+							timeZone="America/Sao_Paulo" />
+					</h:outputLabel>
+
+					<h:outputLabel value="Inspetor de Qualidade: " />
+					<h:outputLabel value="#{fomularioCtrl.formulario.pessoa.nome}" />
+
+					<h:outputLabel value="Status Formulário: " />
+					<h:outputLabel rendered="#{fomularioCtrl.formulario.status == 1}"
+						value="Aberto" />
+					<h:outputLabel rendered="#{fomularioCtrl.formulario.status != 1}"
+						value="Fechado" />
+
+				</p:panelGrid>
+			</div>
+			<br></br>
+
+			<p:commandButton value="Salvar" action="#{fomularioCtrl.novoForm}" />
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>

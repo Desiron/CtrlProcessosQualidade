@@ -1,0 +1,50 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Área do Administrador</title>
+</h:head>
+<h:body>
+
+
+	<h:form id='cadFormPes'>
+		<p:fieldset legend="Formulário de Cadastro de Usuário"
+			style="margin-bottom:20px">
+			<p:panelGrid columns="2" styleClass="semBorda">
+				<h:outputText value="Nome:" />
+				<p:inputText value="#{pessoaCtrl.pessoa.nome}" />
+				<h:outputText value="Usuário:" />
+				<p:inputText value="#{pessoaCtrl.pessoa.usuario}" />
+				<h:outputText value="Senha:" />
+				<p:password value="#{pessoaCtrl.pessoa.senha}" />
+				<p:outputLabel for="Tipo" value="Tipo de Usuário:" />
+
+				<h:panelGrid columns="1" style="margin-bottom:10px" cellpadding="5">
+					<p:selectOneButton id="Tipo" value="#{pessoaCtrl.pessoa.tipo}">
+						<f:selectItem itemLabel="ADMINISTRADOR"
+							itemValue="ROLE_ADMINISTRADOR" />
+						<f:selectItem itemLabel="GESTOR" itemValue="ROLE_GESTOR" />
+						<f:selectItem itemLabel="INSPETOR" itemValue="ROLE_INSPETOR" />
+					</p:selectOneButton>
+				</h:panelGrid>
+
+			</p:panelGrid>
+		</p:fieldset>
+		<style type="text/css">
+.semBorda tr, .semBorda td {
+	border: none !important;
+}
+</style>
+		<p:commandButton value="Limpar" action="#{pessoaCtrl.limpar}"
+			update="cadFormPes" />
+		<p:commandButton value="Salvar Pessoa"
+			action="#{pessoaCtrl.actionGravarCadastro}" update="cadFormPes" />
+		<p:commandButton value="Voltar" action="principal.xhtml" />
+	</h:form>
+</h:body>
+</html>
